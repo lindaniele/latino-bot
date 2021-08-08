@@ -32,8 +32,9 @@ async def wait_for_reply(msg, f, v):
 
 
 async def translations(msg):
-    tr = msg.content.lower().replace('?lat traduci ', '')
-    await msg.channel.send(embed=embed_translations(tr))
+    tr = msg.content.lower().replace('?lat traduci ', '').split()
+    for chunk in (tr[i:i + 20] for i in range(0, len(tr), 20)):
+        await msg.channel.send(embed=embed_translations(chunk))
 
 
 async def random_quote(msg):
