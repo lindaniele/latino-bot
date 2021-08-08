@@ -4,9 +4,9 @@ from discord import Embed  # errors.HTTPException
 
 def embed_translations(tr):
     embed = Embed(title="Traduzione", color=0xFF5733)
-    for word in tr.split():
+    for word in tr:
         values = [f"({i[0]}) {', '.join(i[1][:5])}" for i in latin(word)]
-        embed.add_field(name=f"**{word}**", value="\n".join(values), inline=False)
+        embed.add_field(name=f"**{word}**", value="\n".join(values) if values else "*Nessun risutato*", inline=False)
     return embed
 
 
