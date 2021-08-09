@@ -3,17 +3,27 @@ import requests
 from re import sub
 
 
-# Return the paradigm and the translations of a word
-def outcome(soup):
+def outcome(soup) -> tuple[str, list[str]]:
+    """
+    Get paradigm/grammar and translations from latin word.
+
+    :param soup: soup from Beautiful Soup
+    :return: paradigm/grammar and translations of a word
+    """
     result = ', '.join(sub(r'\(.*\) ', '', span.text) for span in soup.find_all('span', class_='italiano')).split(', ')
     paradigm = soup.find('div', id='myth').findAll('span')[1].text
     return paradigm, result
 
 
-# Make a request to an Online Dictionary
-def latin(word):
+def latin(word: str) -> list[tuple[str, list[str]]]:
+    """
+    Translates word from Latin to Italian.
 
-    # Search translation on Dizionario Olivetti
+    :param word: latin word to be translated
+    :return: a list of possible meanings; per each: paradigm/grammar (str) and translations (list)
+    """
+
+    # Request and search translation on online dictionary Olivetti
     soup = BeautifulSoup(
         requests.get(f'https://www.dizionario-latino.com/dizionario-latino-italiano.php?parola={word}').text, 'lxml'
     )
@@ -35,8 +45,13 @@ def latin(word):
     return []
 
 
-# Search for latin texts
-def search(s):
+def search(s: str) -> tuple[list[tuple], list[tuple]]:
+    """
+    Search for texts in latin or italian.
+
+    :param s: text to be searched
+    :return: results categorized into "frasi" and "versioni"; each: link and text(s)
+    """
     source = requests.get(f'http://www.latin.it/search.htm?q={s}').text
     soup = BeautifulSoup(source, 'lxml')
     texts = soup.find_all('td', class_='hr')
@@ -55,7 +70,13 @@ def search(s):
     return frasi, versioni
 
 
-def text_info(link):
+def text_info(link: str) -> tuple[str, str]:
+    """
+    Drops info of selected text
+
+    :param link: link of the text
+    :return: text info, unfortunately without translation, which can be accessed via link
+    """
     source = requests.get(link).text
     soup = BeautifulSoup(source, 'lxml')
     title = soup.find("span", class_="titolo").text
