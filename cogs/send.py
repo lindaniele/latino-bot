@@ -1,5 +1,5 @@
-from cogs.latin import search
-from cogs.embed import *
+from .latin import search
+from .embed import *
 from random import choice
 from config.settings import client
 import json

@@ -1,8 +1,8 @@
-from cogs.latin import latin, text_info
+from .latin import latin, text_info
 from discord import Embed  # errors.HTTPException
 
 
-def embed_translations(tr):
+def embed_translations(tr: list[str]) -> Embed:
     embed = Embed(title="Traduzione", color=0xFF5733)
     for word in tr:
         values = [f"({i[0]}) {', '.join(i[1][:5])}" for i in latin(word)]
@@ -10,7 +10,7 @@ def embed_translations(tr):
     return embed
 
 
-def embed_texts(f, v):
+def embed_texts(f: list[tuple[str, str]], v: list[tuple[str, str, str]]) -> Embed:
     d = f"{len(f)} fras{'e' if len(f)==1 else 'i'} e {len(v)} version{'e' if len(v)==1 else 'i'} di cui mostro i primi"
     embed = Embed(title="Testi trovati", description=d)
     # Sometimes my genius is frightening
@@ -22,7 +22,7 @@ def embed_texts(f, v):
     return embed
 
 
-def embed_reply(link):
+def embed_reply(link: str) -> Embed:
     title, text = text_info(link)
     embed = Embed()
     embed.set_author(name="Splash Latino", icon_url="http://www.latin.it/logo/150x150/latino.png")

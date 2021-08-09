@@ -45,7 +45,7 @@ def latin(word: str) -> list[tuple[str, list[str]]]:
     return []
 
 
-def search(s: str) -> tuple[list[tuple], list[tuple]]:
+def search(s: str) -> tuple[list[tuple[str, str]], list[tuple[str, str, str]]]:
     """
     Search for texts in latin or italian.
 
