@@ -16,7 +16,7 @@ Il comando `?lat traduci` restituisce le prime 5 traduzioni di ogni parola e ne 
 
 #### Esempio
 
-`?lat traduci puella pulcra` darà un embed text con la traduzione di puella e pulcra (e paradigma). 
+`?lat traduci puella pulcra` darà un embed text con la traduzione di puella e pulcra (e paradigma). Di solito io copio il testo latino e lo incollo.
 
 ## Cerca
 
