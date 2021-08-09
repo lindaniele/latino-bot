@@ -8,7 +8,7 @@ Il bot non è attualmente online, ma può essere aggiunto con questo [LINK](http
 
 ## Traduci
 
-Mi sono rotto di cercare ogni volta la parola in latino e la tradusione in italiano sul dizionario cartaceo o online. 
+Mi sono rotto di cercare ogni volta la parola in latino e la traduzione in italiano sul dizionario cartaceo o online. 
 
 #### Comando
 
@@ -24,7 +24,7 @@ Cercare frasi e versioni
 
 #### Comando
 
-`?lat cerca` dà le prime 5 frasi che ti trova, e le prime 5 versioni che trova, ciascuno numerato, rispondendo con il numero di quel che si vuole, si può accedere al testo e alla traduzione
+`?lat cerca` trova le frasi e versioni, di ogni, mostra le prime 5, numerato da 1 a 10, rispondendo con il numero di quel che si vuole, si può accedere al testo e alla traduzione
 
 #### Esempio
 
