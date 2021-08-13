@@ -1,49 +1,52 @@
-from cogs import send
-from config.settings import *
+import sys
+from config import settings
+import discord
+import message_handler
+
+this = sys.modules[__name__]
+this.running = False
 
 
-@client.event
-async def on_ready():
-    await client.change_presence(activity=discord.Game(name=NOW_PLAYING))
-    print(f"We have logged in as {client.user}")
+def main():
+    print("Starting up...")
+
+    intents = discord.Intents.all()
+    intents.presences = True
+    client = discord.Client(intents=intents)
+
+    @client.event
+    async def on_ready():
+        if this.running:
+            return
+
+        this.running = True
+
+        if settings.NOW_PLAYING:
+            print("Setting NP game", flush=True)
+            await client.change_presence(
+                activity=discord.Game(name=settings.NOW_PLAYING))
+        print("Logged in!", flush=True)
+
+    async def common_handle_message(message):
+        text = message.content
+        if text.startswith(settings.COMMAND_PREFIX) and text != settings.COMMAND_PREFIX:
+            cmd_split = text[len(settings.COMMAND_PREFIX):].split()
+            try:
+                await message_handler.handle_command(cmd_split[0].lower(), cmd_split[1:], message, client)
+            except Exception:
+                print("Error while handling message", flush=True)
+                raise
+
+    @client.event
+    async def on_message(message):
+        await common_handle_message(message)
+
+    @client.event
+    async def on_message_edit(before, after):
+        await common_handle_message(after)
+
+    client.run(settings.BOT_TOKEN)
 
 
-# COMMAND_HANDLERS = {
-#     'traduci': send.translations,
-#     'cerca': send.texts_found,
-#     'random': send.random_quote
-# }
-#
-#
-# async def handle_command(command, args, msg, bot_client):
-#     if command not in COMMAND_HANDLERS:
-#         return
-#     cmd_obj = COMMAND_HANDLERS[command]
-#
-#
-# async def handle_message(msg):
-#     text = msg.content
-#     if text.startswith(COMMAND_PREFIX) and text != COMMAND_PREFIX:
-#         cmd_split = text[len(COMMAND_PREFIX):].split()
-#         await handle_command(cmd_split[0].lower(), cmd_split[1:], msg, client)
-
-
-@client.event
-async def on_message(msg):
-    if msg.author == client.user:
-        return
-
-    if msg.content.startswith('?lat help'):
-        pass
-
-    elif msg.content.startswith('?lat traduci '):
-        await send.translations(msg)
-
-    elif msg.content.startswith('?lat cerca '):
-        await send.texts_found(msg)
-
-    elif '?lat random' in msg.content:
-        await send.random_quote(msg)
-
-
-client.run(TOKEN)
+if __name__ == "__main__":
+    main()

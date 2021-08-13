@@ -1,24 +1,16 @@
-# Imports
-import discord
+import os
 from dotenv import load_dotenv, find_dotenv
-from os import getenv
-# from discord.ext import commands
 
+# The prefix that will be used to parse commands.
+# It doesn't have to be a single character!
 COMMAND_PREFIX = "?lat "
 
-
-# Client connection that connects to Discord
-# Enable discord intents presences
-intents = discord.Intents.all()
-intents.presences = True
-client = discord.Client(intents=intents)
-# client = commands.Bot(command_prefix=COMMAND_PREFIX, intents=intents)
-
-
-# Parse the .env file and then
-# load the TOKEN as environment variables.
+# The bot token. Keep this secret!
 load_dotenv(find_dotenv())
-TOKEN: str = getenv("TOKEN")
+BOT_TOKEN = os.getenv("TOKEN")
 
+# The now playing game. Set this to anything false-y ("", None) to disable it
+NOW_PLAYING = COMMAND_PREFIX + "commands"
 
-NOW_PLAYING: str = COMMAND_PREFIX + "commands"
+# Base directory. Feel free to use it if you want.
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
