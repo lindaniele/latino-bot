@@ -1,6 +1,6 @@
-from commands.base_command import BaseCommand
 import json
-from random import choice
+from commands.base_command  import BaseCommand
+from random                 import choice
 
 
 class Random(BaseCommand):

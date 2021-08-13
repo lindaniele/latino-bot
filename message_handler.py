@@ -1,18 +1,14 @@
 from commands.base_command import BaseCommand
-
-# This, in addition to tweaking __all__ on commands/__init__.py,
-# imports all classes inside the commands package.
+# This, in addition to tweaking __all__ on commands/__init__.py, imports all classes inside the commands package.
 from commands import *  # noqa
 from config import settings
 
-# noinspection PyArgumentList
-COMMAND_HANDLERS = {c.__name__.lower(): c() for c in BaseCommand.__subclasses__()}
+
+COMMAND_HANDLERS = {c.__name__.lower(): c() for c in BaseCommand.__subclasses__()}  # noqa
 
 
 async def handle_command(command, args, message, bot_client):
     # Check whether the command is supported, stop silently if it's not
-    # (to prevent unnecessary spam if our bot shares the same command prefix
-    # with some other bot)
     if command not in COMMAND_HANDLERS:
         return
 

@@ -1,18 +1,6 @@
-from bs4 import BeautifulSoup
 import requests
+from bs4 import BeautifulSoup
 from re import sub
-
-
-def outcome(soup) -> tuple[str, list[str]]:
-    """
-    Get paradigm/grammar and translations from latin word.
-
-    :param soup: soup from Beautiful Soup
-    :return: paradigm/grammar and translations of a word
-    """
-    result = ', '.join(sub(r'\(.*\) ', '', span.text) for span in soup.find_all('span', class_='italiano')).split(', ')
-    paradigm = soup.find('div', id='myth').findAll('span')[1].text
-    return paradigm, result
 
 
 async def latin(word: str) -> list[tuple[str, list[str], str]]:
@@ -42,6 +30,18 @@ async def latin(word: str) -> list[tuple[str, list[str], str]]:
 
     # If there are None
     return []
+
+
+def outcome(soup: BeautifulSoup) -> tuple[str, list[str]]:
+    """
+    Get paradigm/grammar and translations from latin word.
+
+    :param soup: soup from Beautiful Soup
+    :return: paradigm/grammar and translations of a word
+    """
+    result = ', '.join(sub(r'\(.*\) ', '', span.text) for span in soup.find_all('span', class_='italiano')).split(', ')
+    paradigm = soup.find('div', id='myth').findAll('span')[1].text
+    return paradigm, result
 
 
 def search(s: str) -> tuple[list[tuple[str, str]], list[tuple[str, str, str]]]:

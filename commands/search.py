@@ -1,7 +1,7 @@
-from commands.base_command import BaseCommand
-from utils.latin import search, text_info
-from discord import Embed
 import asyncio
+from commands.base_command  import BaseCommand
+from utils.latin            import search, text_info
+from discord                import Embed
 
 
 class Search(BaseCommand):
