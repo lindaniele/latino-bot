@@ -15,31 +15,30 @@ def outcome(soup) -> tuple[str, list[str]]:
     return paradigm, result
 
 
-def latin(word: str) -> list[tuple[str, list[str]]]:
+async def latin(word: str) -> list[tuple[str, list[str], str]]:
     """
     Translates word from Latin to Italian.
 
     :param word: latin word to be translated
-    :return: a list of possible meanings; per each: paradigm/grammar (str) and translations (list)
+    :return: a list of possible meanings; per each: paradigm/grammar (str), translations (list) and link
     """
 
     # Request and search translation on online dictionary Olivetti
-    soup = BeautifulSoup(
-        requests.get(f'https://www.dizionario-latino.com/dizionario-latino-italiano.php?parola={word}').text, 'lxml'
-    )
+    link = f'https://www.dizionario-latino.com/dizionario-latino-italiano.php?parola={word}'
+    soup = BeautifulSoup(requests.get(link).text, 'lxml')
 
     # If there's only one definition
     find = soup.find_all('span', class_='italiano')
     if find:
         result = ', '.join(sub(r'\(.*\) ', '', span.text) for span in find).split(', ')
         paradigm = soup.find('div', id='myth').findAll('span')[1].text
-        return [(paradigm, result)]
+        return [(paradigm, result, link)]
 
     # If there are multiple definitions
     hrefs = soup.find_all('td', {'width': '80%', 'align': 'left'})
     if hrefs:
-        links = set(href.a['href'] for href in hrefs)
-        return [outcome(BeautifulSoup(requests.get(f'https://www.dizionario-latino.com/{link}').text, 'lxml')) for link in links]
+        links = set(f"https://www.dizionario-latino.com/{href.a['href']}" for href in hrefs)
+        return [outcome(BeautifulSoup(requests.get(link).text, 'lxml'))+(link,) for link in links]
 
     # If there are None
     return []
@@ -85,3 +84,14 @@ def text_info(link: str) -> tuple[str, str]:
     else:
         text = soup.find("span", class_="notranslate").text
     return title, text
+
+
+def mouseover(word: str) -> str:
+    """
+    Searches word information on William Whitaker's WORDS.
+
+    :param word: word to be searched
+    :return: info of latin word
+    """
+    request = requests.get(f'https://archives.nd.edu/cgi-bin/wordz.pl?keyword={word}')
+    return BeautifulSoup(request.text, 'lxml').find('pre').text

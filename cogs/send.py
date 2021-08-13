@@ -6,9 +6,10 @@ import json
 
 
 async def texts_found(msg):
-    f, v = search(msg.content.replace('?lat cerca ', ''))
-    await msg.channel.send(embed=embed_texts(f, v))
-    await wait_for_reply(msg, f, v)
+    async with msg.channel.typing():
+        f, v = search(msg.content.replace('?lat cerca ', ''))
+        await msg.channel.send(embed=embed_texts(f, v))
+        await wait_for_reply(msg, f, v)
 
 
 def check(m, msg, f, v):
@@ -32,9 +33,9 @@ async def wait_for_reply(msg, f, v):
 
 
 async def translations(msg):
-    tr = msg.content.lower().replace('?lat traduci ', '').split()
-    for chunk in (tr[i:i + 20] for i in range(0, len(tr), 20)):
-        await msg.channel.send(embed=embed_translations(chunk))
+    async with msg.channel.typing():
+        tr = msg.content.lower().replace('?lat traduci ', '').split()
+        await (embed_translations_mobile(tr, msg.channel.send) if msg.author.is_on_mobile() else embed_translations_desktop(tr, msg.channel.send))
 
 
 async def random_quote(msg):
