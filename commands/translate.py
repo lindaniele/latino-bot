@@ -1,6 +1,6 @@
 import asyncio
 from commands.base_command  import BaseCommand
-from utils.latin            import latin, mouseover
+from latin.latin            import latin, mouseover
 from discord                import Embed
 
 

@@ -11,7 +11,7 @@ class Random(BaseCommand):
         super().__init__(description, params)
 
     async def handle(self, params, message, client):
-        with open('utils/quotes.json') as fp:
+        with open('latin/quotes.json') as fp:
             data = json.load(fp)
             lat, ita = choice(list(data.items()))
         await message.channel.send(f"**{lat}**\n{ita}")
