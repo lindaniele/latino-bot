@@ -1,3 +1,5 @@
+![Alt text](docs/image.png)
+
 # Latino
 
 Latino é un bot per aiutare chi fa latino; contiene funzioni utili per automatizzare i tediosi task mentre si fa latino. Discord bot semplice scritto con [discord.py](https://discordpy.readthedocs.io/) da [lindaniele](https://github.com/lindaniele/).
